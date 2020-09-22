@@ -17,6 +17,9 @@ const GAP_SHADOW = 10;
 const GAP_NICKNAME = 10;
 const GAP_CHART = 40;
 
+const TEXT_CONGRAT = `Ура вы победили!`;
+const TEXT_ANNOUNCE_RESULTS = `Список результатов:`;
+
 const FONT_SIZE = 16;
 const FONT_COLOR = `#000000`;
 const LINE_HEIGHT = 20;
@@ -50,8 +53,8 @@ window.renderStatistics = function (ctx, players, times) {
   ctx.font = `${FONT_SIZE}px PT Mono`;
   ctx.fillStyle = FONT_COLOR;
   ctx.textBaseline = `hanging`;
-  ctx.fillText(`Ура вы победили!`, CLOUD_START_X + GAP, CLOUD_START_Y + GAP);
-  ctx.fillText(`Список результатов:`, CLOUD_START_X + GAP, CLOUD_START_Y + GAP + LINE_HEIGHT);
+  ctx.fillText(TEXT_CONGRAT, CLOUD_START_X + GAP, CLOUD_START_Y + GAP);
+  ctx.fillText(TEXT_ANNOUNCE_RESULTS, CLOUD_START_X + GAP, CLOUD_START_Y + GAP + LINE_HEIGHT);
 
   const maxTime = getMaxElement(times);
 
