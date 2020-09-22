@@ -1,24 +1,33 @@
 'use strict';
 
-const CLOUD_WIDTH = 420; // Ширина модалки
-const CLOUD_HEIGHT = 270; // Высота модалки
-const CLOUD_START_X = 100; // Точка отсчета в канвасе для модалки по X
-const CLOUD_START_Y = 10; // Точка отсчета в канвасе для модалки по Y
-const MAX_BAR_HEIGHT = 150; // Максимальная высота колонки
-const BAR_WIDTH = 40; // Ширина колонки
-const COLUMN_GAP = 50; // Отступ между колонками
-const SHADOW_GAP = 10; // Отступ для отбрасывания тени
-const GAP = 20; // Padding от границ до текста
-const LINE_HEIGHT = 20; // Интервал между строками текста
-const NICKNAME_GAP = 10; // Отступ от верхушки никнейма до графика
-const CHART_PADDING = 40; // Отступ от края до первого графика
+const CLOUD_WIDTH = 420;
+const CLOUD_HEIGHT = 270;
+const CLOUD_COLOR = `#ffffff`;
+const CLOUD_SHADOW_COLOR = `rgba(0, 0, 0, 0.7)`;
+const CLOUD_START_X = 100;
+const CLOUD_START_Y = 10;
 
-let renderCloud = function (ctx, x, y, color) {
+const BAR_MAX_HEIGHT = 150;
+const BAR_WIDTH = 40;
+const BAR_OWN_COLOR = `rgba(255, 0, 0, 1)`;
+
+const GAP = 20;
+const GAP_BAR = 50;
+const GAP_SHADOW = 10;
+const GAP_NICKNAME = 10;
+const GAP_CHART = 40;
+
+const FONT_SIZE = 16;
+const FONT_COLOR = `#000000`;
+const LINE_HEIGHT = 20;
+
+
+const renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
-let getMaxElement = function (arr) {
+const getMaxElement = function (arr) {
   let maxElement = arr[0];
 
   for (let i = 1; i < arr.length; i++) {
@@ -30,29 +39,31 @@ let getMaxElement = function (arr) {
   return maxElement;
 };
 
-window.renderStatistics = function (ctx, players, times) {
-  renderCloud(ctx, CLOUD_START_X + SHADOW_GAP, CLOUD_START_Y + SHADOW_GAP, `rgba(0, 0, 0, 0.7)`);
-  renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, `#ffffff`);
+const getBarColor = function (player) {
+  return (player === `Вы`) ? BAR_OWN_COLOR : `hsl(240, ${Math.round(Math.random() * 100)}%, 50%)`;
+};
 
-  ctx.font = `16px PT Mono`;
-  ctx.fillStyle = `#000000`;
+window.renderStatistics = function (ctx, players, times) {
+  renderCloud(ctx, CLOUD_START_X + GAP_SHADOW, CLOUD_START_Y + GAP_SHADOW, CLOUD_SHADOW_COLOR);
+  renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, CLOUD_COLOR);
+
+  ctx.font = `${FONT_SIZE}px PT Mono`;
+  ctx.fillStyle = FONT_COLOR;
   ctx.textBaseline = `hanging`;
   ctx.fillText(`Ура вы победили!`, CLOUD_START_X + GAP, CLOUD_START_Y + GAP);
   ctx.fillText(`Список результатов:`, CLOUD_START_X + GAP, CLOUD_START_Y + GAP + LINE_HEIGHT);
 
-  let maxTime = getMaxElement(times);
+  const maxTime = getMaxElement(times);
 
   for (let i = 0; i < players.length; i++) {
-    ctx.fillText(players[i], CLOUD_START_X + CHART_PADDING + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_HEIGHT - GAP);
+    const currentPosX = CLOUD_START_X + GAP_CHART + (BAR_WIDTH + GAP_BAR) * i;
+    const currentBarHeight = times[i] * BAR_MAX_HEIGHT / maxTime;
 
-    if (players[i] === `Вы`) {
-      ctx.fillStyle = `rgba(255, 0, 0, 1)`;
-    } else {
-      ctx.fillStyle = `hsl(240, ${Math.round(Math.random() * (88 - 12) + 12)}%, 50%)`;
-    }
-    ctx.fillRect(CLOUD_START_X + CHART_PADDING + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_HEIGHT - GAP - NICKNAME_GAP, BAR_WIDTH, -times[i] * MAX_BAR_HEIGHT / maxTime);
+    ctx.fillStyle = FONT_COLOR;
+    ctx.fillText(players[i], currentPosX, CLOUD_HEIGHT - GAP);
+    ctx.fillText(Math.round(times[i]), currentPosX, CLOUD_HEIGHT - GAP - currentBarHeight - GAP_NICKNAME * 3);
 
-    ctx.fillStyle = `#000000`;
-    ctx.fillText(Math.round(times[i]), CLOUD_START_X + CHART_PADDING + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_HEIGHT - GAP - NICKNAME_GAP - times[i] * MAX_BAR_HEIGHT / maxTime - NICKNAME_GAP * 2);
+    ctx.fillStyle = getBarColor(players[i]);
+    ctx.fillRect(currentPosX, CLOUD_HEIGHT - GAP - GAP_NICKNAME, BAR_WIDTH, -currentBarHeight);
   }
 };
