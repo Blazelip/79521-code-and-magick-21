@@ -1,6 +1,11 @@
 'use strict';
 
 const WIZARDS_AMOUNT = 4;
+const NAMES = [`Иван`, `Хуан`, `Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
+const SURNAMES = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
+const COAT_COLORS = [`rgb(101, 137, 164)`, `rgb(241, 43, 107)`, `rgb(146, 100, 161)`, `rgb(56, 159, 117)`, `rgb(215, 210, 55)`, `rgb(0, 0, 0)`];
+const EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
+
 const setupBlock = document.querySelector(`.setup`);
 const setupSimilarBlock = setupBlock.querySelector(`.setup-similar`);
 const setupSimilarList = setupBlock.querySelector(`.setup-similar-list`);
@@ -8,14 +13,9 @@ setupBlock.classList.remove(`hidden`);
 
 const wizardTemplate = document.getElementById(`similar-wizard-template`).content.querySelector(`.setup-similar-item`);
 
-
-const NAMES = [`Иван`, `Хуан`, `Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
-const SURNAMES = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
-const COAT_COLORS = [`rgb(101, 137, 164)`, `rgb(241, 43, 107)`, `rgb(146, 100, 161)`, `rgb(56, 159, 117)`, `rgb(215, 210, 55)`, `rgb(0, 0, 0)`];
-const EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
-
 const getRandomArrayIndex = (array) => {
   const randomIndex = Math.floor(Math.random() * array.length);
+
   return randomIndex;
 };
 
