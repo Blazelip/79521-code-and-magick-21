@@ -9,8 +9,6 @@ const EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
 const setupBlock = document.querySelector(`.setup`);
 const setupSimilarBlock = setupBlock.querySelector(`.setup-similar`);
 const setupSimilarList = setupBlock.querySelector(`.setup-similar-list`);
-setupBlock.classList.remove(`hidden`);
-
 const wizardTemplate = document.getElementById(`similar-wizard-template`).content.querySelector(`.setup-similar-item`);
 
 const getRandomArrayIndex = (array) => {
@@ -57,5 +55,6 @@ const renderFragment = (wizardsArray) => {
   return fragment;
 };
 
+setupBlock.classList.remove(`hidden`);
 setupSimilarList.appendChild(renderFragment(wizards));
 setupSimilarBlock.classList.remove(`hidden`);
