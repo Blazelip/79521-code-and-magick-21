@@ -37,11 +37,11 @@ const setupFireballColorInput = setupPlayer.querySelector(`[name="fireball-color
 
 const wizardCoat = setupPlayer.querySelector(`.setup-wizard .wizard-coat`);
 const wizardEyes = setupPlayer.querySelector(`.setup-wizard .wizard-eyes`);
-const fireballColor = setupPlayer.querySelector(`.setup-fireball-wrap`);
+const fireballColor = setupPlayer.querySelector(`.setup-fireball`);
 
 
 const onPopupEscPress = (evt) => {
-  if (evt.key === `Escape`) {
+  if (evt.key === `Escape` && document.activeElement !== setupNameInput) {
     evt.preventDefault();
     closePopup();
   }
@@ -53,25 +53,24 @@ const onPopupCloseBtnEnter = (evt) => {
   }
 };
 
-const onPopupChangeCoatColor = () => {
-  const colorValue = COAT_COLORS[getRandomArrayIndex(COAT_COLORS)];
+const onWizzardSetSettings = (evt) => {
 
-  wizardCoat.style.fill = colorValue;
-  setupCoatColorInput.value = colorValue;
-};
+  switch (evt.target) {
+    case wizardCoat:
+      setupCoatColorInput.value = getRandomArrayIndex(COAT_COLORS);
+      evt.target.style.fill = setupCoatColorInput.value;
+      break;
 
-const onPopupChangeEyesColor = () => {
-  const colorValue = EYES_COLORS[getRandomArrayIndex(EYES_COLORS)];
+    case wizardEyes:
+      setupEyesColorInput.value = getRandomArrayIndex(EYES_COLORS);
+      evt.target.style.fill = setupEyesColorInput.value;
+      break;
 
-  wizardEyes.style.fill = colorValue;
-  setupEyesColorInput.value = colorValue;
-};
-
-const onPopupChangeFireballColor = () => {
-  const colorValue = FIREBALL_COLORS[getRandomArrayIndex(FIREBALL_COLORS)];
-
-  fireballColor.style.backgroundColor = colorValue;
-  setupFireballColorInput.value = colorValue;
+    case fireballColor:
+      setupFireballColorInput.value = getRandomArrayIndex(FIREBALL_COLORS);
+      evt.target.style.backgroundColor = setupFireballColorInput.value;
+      break;
+  }
 };
 
 const openPopup = () => {
@@ -79,9 +78,7 @@ const openPopup = () => {
 
   document.addEventListener(`keydown`, onPopupEscPress);
   setupClose.addEventListener(`keydown`, onPopupCloseBtnEnter);
-  wizardCoat.addEventListener(`click`, onPopupChangeCoatColor);
-  wizardEyes.addEventListener(`click`, onPopupChangeEyesColor);
-  fireballColor.addEventListener(`click`, onPopupChangeFireballColor);
+  setupPlayer.addEventListener(`click`, onWizzardSetSettings);
 };
 
 const closePopup = () => {
@@ -89,62 +86,11 @@ const closePopup = () => {
 
   document.removeEventListener(`keydown`, onPopupEscPress);
   setupClose.removeEventListener(`keydown`, onPopupCloseBtnEnter);
-  wizardCoat.removeEventListener(`click`, onPopupChangeCoatColor);
-  wizardEyes.removeEventListener(`click`, onPopupChangeEyesColor);
-  fireballColor.removeEventListener(`click`, onPopupChangeFireballColor);
+  setupPlayer.removeEventListener(`click`, onWizzardSetSettings);
 };
 
-setupOpen.addEventListener(`click`, () => {
-  openPopup();
-});
-
-setupOpenIcon.addEventListener(`keydown`, (evt) => {
-  if (evt.key === `Enter`) {
-    openPopup();
-  }
-});
-
-setupClose.addEventListener(`click`, () => {
-  closePopup();
-});
-
-
-setupNameInput.addEventListener(`blur`, () => {
-  document.addEventListener(`keydown`, onPopupEscPress);
-});
-
-setupNameInput.addEventListener(`focus`, () => {
-  document.removeEventListener(`keydown`, onPopupEscPress);
-});
-
-// setupNameInput.addEventListener(`invalid`, () => {
-//   if (setupNameInput.validity.tooShort) {
-//     setupNameInput.setCustomValidity(`Имя должно состоять минимум из 2-х символов`);
-//   } else if (setupNameInput.validity.tooLong) {
-//     setupNameInput.setCustomValidity(`Имя не должно превышать 25-ти символов`);
-//   } else if (setupNameInput.validity.valueMissing) {
-//     setupNameInput.setCustomValidity(`Обязательное поле`);
-//   } else {
-//     setupNameInput.setCustomValidity(``);
-//   }
-// });
-
-setupNameInput.addEventListener(`input`, () => {
-  const valueLength = setupNameInput.value.length;
-
-  if (valueLength < MIN_NAME_LENGTH) {
-    setupNameInput.setCustomValidity(`Ещё ` + (MIN_NAME_LENGTH - valueLength) + ` симв.`);
-  } else if (valueLength > MAX_NAME_LENGTH) {
-    setupNameInput.setCustomValidity(`Удалите лишние ` + (valueLength - MAX_NAME_LENGTH) + ` симв.`);
-  } else {
-    setupNameInput.setCustomValidity(``);
-  }
-
-  setupNameInput.reportValidity();
-});
-
 const getRandomArrayIndex = (array) => {
-  return Math.floor(Math.random() * array.length);
+  return array[Math.floor(Math.random() * array.length)];
 };
 
 const getWizardsData = (wizardAmount) => {
@@ -152,9 +98,9 @@ const getWizardsData = (wizardAmount) => {
 
   for (let i = 0; i < wizardAmount; i++) {
     const wizardData = {
-      fullName: NAMES[getRandomArrayIndex(NAMES)] + ` ` + SURNAMES[getRandomArrayIndex(SURNAMES)],
-      coatColor: COAT_COLORS[getRandomArrayIndex(COAT_COLORS)],
-      eyesColor: EYES_COLORS[getRandomArrayIndex(EYES_COLORS)]
+      fullName: getRandomArrayIndex(NAMES) + getRandomArrayIndex(SURNAMES),
+      coatColor: getRandomArrayIndex(COAT_COLORS),
+      eyesColor: getRandomArrayIndex(EYES_COLORS)
     };
 
     wizardsData.push(wizardData);
@@ -184,8 +130,35 @@ const renderWizards = (wizardsArray) => {
   setupSimilarList.appendChild(fragment);
 };
 
-let wizards = getWizardsData(WIZARDS_AMOUNT);
+const wizards = getWizardsData(WIZARDS_AMOUNT);
 renderWizards(wizards);
 
-// setupBlock.classList.remove(`hidden`);
+setupOpen.addEventListener(`click`, () => {
+  openPopup();
+});
+
+setupOpenIcon.addEventListener(`keydown`, (evt) => {
+  if (evt.key === `Enter`) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener(`click`, () => {
+  closePopup();
+});
+
+setupNameInput.addEventListener(`change`, (evt) => {
+  const valueLength = evt.target.value.length;
+
+  if (valueLength < MIN_NAME_LENGTH) {
+    setupNameInput.setCustomValidity(`Ещё ${MIN_NAME_LENGTH - valueLength} симв.`);
+  } else if (valueLength > MAX_NAME_LENGTH) {
+    setupNameInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_NAME_LENGTH} симв.`);
+  } else {
+    setupNameInput.setCustomValidity(``);
+  }
+
+  setupNameInput.reportValidity();
+});
+
 setupSimilarBlock.classList.remove(`hidden`);
