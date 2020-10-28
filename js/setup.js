@@ -47,17 +47,20 @@
     return element;
   };
 
-  const onSuccessLoadData = (wizardsArray) => {
+  const renderWizards = (wizardsArray) => {
     const fragment = document.createDocumentFragment();
-    const arrayFragment = window.util.getPartOfArray(wizardsArray, WIZARDS_AMOUNT);
 
-    arrayFragment.forEach((wizard) => {
+    wizardsArray.forEach((wizard) => {
       const currentWizard = createWizard(wizard);
       fragment.appendChild(currentWizard);
     });
 
     setupSimilarList.appendChild(fragment);
+  };
 
+  const onSuccessLoadData = (serverData) => {
+    const dataFragment = window.util.getPartOfArray(serverData, WIZARDS_AMOUNT);
+    renderWizards(dataFragment);
     setupSimilarBlock.classList.remove(`hidden`);
   };
 
