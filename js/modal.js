@@ -2,6 +2,7 @@
 
 (() => {
   const setupBlock = document.querySelector(`.setup`);
+  const setupForm = setupBlock.querySelector(`.setup-wizard-form`);
   const modalHandle = setupBlock.querySelector(`.upload`);
   const setupPlayer = setupBlock.querySelector(`.setup-player`);
   const setupNameInput = setupBlock.querySelector(`.setup-user-name`);
@@ -36,6 +37,10 @@
     if (evt.key === `Enter`) {
       closePopup();
     }
+  };
+
+  const onSuccessSendForm = () => {
+    setupBlock.classList.add(`hidden`);
   };
 
   setupOpen.addEventListener(`click`, () => {
@@ -99,6 +104,11 @@
 
     document.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
+  });
+
+  setupForm.addEventListener(`submit`, (evt) => {
+    window.backend.upload(new FormData(setupForm), onSuccessSendForm, window.setup.methods.onFailedRequest);
+    evt.preventDefault();
   });
 
 })();
