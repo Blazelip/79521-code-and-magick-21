@@ -3,7 +3,20 @@
 (() => {
   const MIN_NAME_LENGTH = 2;
   const MAX_NAME_LENGTH = 25;
+
+  const COAT_COLORS = [
+    `rgb(101, 137, 164)`,
+    `rgb(241, 43, 107)`,
+    `rgb(146, 100, 161)`,
+    `rgb(56, 159, 117)`,
+    `rgb(215, 210, 55)`,
+    `rgb(0, 0, 0)`
+  ];
+  const EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
   const FIREBALL_COLORS = [`#ee4830`, `#30a8ee`, `#5ce6c0`, `#e848d5`, `#e6e848`];
+
+  let coatColor = `rgb(101, 137, 164)`;
+  let eyesColor = `black`;
 
   const setupBlock = document.querySelector(`.setup`);
   const setupPlayer = setupBlock.querySelector(`.setup-player`);
@@ -16,22 +29,62 @@
   const wizardEyes = setupPlayer.querySelector(`.setup-wizard .wizard-eyes`);
   const fireballColor = setupPlayer.querySelector(`.setup-fireball`);
 
+  const namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  const getRank = (wizard) => {
+    let rank = 0;
+
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+
+    return rank;
+  };
+
+  const sortWizardsData = (sourceData) => {
+    window.render.renderWizards(sourceData.sort(function (left, right) {
+      let rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    }));
+  };
+
   const onWizzardSetSettings = (evt) => {
 
     switch (evt.target) {
       case wizardCoat:
-        setupCoatColorInput.value = window.util.getRandomArrayIndex(window.setup.const.COAT_COLORS);
-        evt.target.style.fill = setupCoatColorInput.value;
+        const newCoatColor = window.util.getRandomArrayIndex(COAT_COLORS);
+        setupCoatColorInput.value = newCoatColor;
+        evt.target.style.fill = newCoatColor;
+        coatColor = newCoatColor;
+        sortWizardsData(window.sourceData);
         break;
 
       case wizardEyes:
-        setupEyesColorInput.value = window.util.getRandomArrayIndex(window.setup.const.EYES_COLORS);
-        evt.target.style.fill = setupEyesColorInput.value;
+        const newEyesColor = window.util.getRandomArrayIndex(EYES_COLORS);
+        setupEyesColorInput.value = newEyesColor;
+        evt.target.style.fill = newEyesColor;
+        eyesColor = newEyesColor;
+        sortWizardsData(window.sourceData);
         break;
 
       case fireballColor:
-        setupFireballColorInput.value = window.util.getRandomArrayIndex(FIREBALL_COLORS);
-        evt.target.style.backgroundColor = setupFireballColorInput.value;
+        const newFireballColor = window.util.getRandomArrayIndex(FIREBALL_COLORS);
+        setupFireballColorInput.value = newFireballColor;
+        evt.target.style.backgroundColor = newFireballColor;
         break;
     }
   };
@@ -51,7 +104,8 @@
   });
 
   window.customize = {
-    onWizzardSetSettings
+    onWizzardSetSettings,
+    sortWizardsData
   };
 
 })();
