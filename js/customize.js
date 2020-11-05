@@ -78,7 +78,7 @@
         // });
         // const foo = window.debounce();
         // foo(sortWizardsData(window.sourceData));
-        sortWizardsData(window.sourceData);
+        // sortWizardsData(window.sourceData);
         break;
 
       case wizardEyes:
@@ -94,7 +94,7 @@
         // window.debounce(() => {
         //   sortWizardsData(window.sourceData);
         // });
-        sortWizardsData(window.sourceData);
+        // sortWizardsData(window.sourceData);
         break;
 
       case fireballColor:
@@ -103,6 +103,8 @@
         evt.target.style.backgroundColor = newFireballColor;
         break;
     }
+
+    sortWizardsData(window.sourceData);
   };
 
   setupNameInput.addEventListener(`change`, (evt) => {
