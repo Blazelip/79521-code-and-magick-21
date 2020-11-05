@@ -70,6 +70,14 @@
         setupCoatColorInput.value = newCoatColor;
         evt.target.style.fill = newCoatColor;
         coatColor = newCoatColor;
+        // window.setTimeout(function () {
+        //   sortWizardsData(window.sourceData);
+        // }, 500);
+        // window.debounce(() => {
+        //   sortWizardsData(window.sourceData);
+        // });
+        // const foo = window.debounce();
+        // foo(sortWizardsData(window.sourceData));
         sortWizardsData(window.sourceData);
         break;
 
@@ -78,6 +86,14 @@
         setupEyesColorInput.value = newEyesColor;
         evt.target.style.fill = newEyesColor;
         eyesColor = newEyesColor;
+        // window.setTimeout(function () {
+        //   sortWizardsData(window.sourceData);
+        // }, 500);
+        // const foo1 = window.debounce();
+        // foo1(sortWizardsData(window.sourceData));
+        // window.debounce(() => {
+        //   sortWizardsData(window.sourceData);
+        // });
         sortWizardsData(window.sourceData);
         break;
 

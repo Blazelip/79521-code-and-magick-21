@@ -107,7 +107,7 @@
   });
 
   setupForm.addEventListener(`submit`, (evt) => {
-    window.backend.upload(new FormData(setupForm), onSuccessSendForm, window.setup.onFailedRequest);
+    window.backend.upload(new FormData(setupForm), onSuccessSendForm, window.similar.onFailedRequest);
     evt.preventDefault();
   });
 

@@ -1,7 +1,6 @@
 'use strict';
 
 (() => {
-  let sourceData = [];
 
   const onSuccessLoadData = (serverData) => {
     window.sourceData = serverData;
