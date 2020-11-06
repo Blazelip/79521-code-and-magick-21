@@ -62,6 +62,10 @@
     }));
   };
 
+  // const testFunc = () => {
+  //   sortWizardsData(window.sourceData);
+  // };
+
   const onWizzardSetSettings = (evt) => {
 
     switch (evt.target) {
@@ -71,6 +75,7 @@
         evt.target.style.fill = newCoatColor;
         coatColor = newCoatColor;
         sortWizardsData(window.sourceData);
+        // window.util.debounce(testFunc);
         break;
 
       case wizardEyes:
@@ -79,6 +84,7 @@
         evt.target.style.fill = newEyesColor;
         eyesColor = newEyesColor;
         sortWizardsData(window.sourceData);
+        // window.util.debounce(testFunc);
         break;
 
       case fireballColor:
