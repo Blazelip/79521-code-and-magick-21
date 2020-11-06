@@ -74,8 +74,9 @@
         setupCoatColorInput.value = newCoatColor;
         evt.target.style.fill = newCoatColor;
         coatColor = newCoatColor;
-        sortWizardsData(window.sourceData);
-        // window.util.debounce(testFunc);
+        window.util.debounce(() => {
+          sortWizardsData(window.sourceData);
+        })();
         break;
 
       case wizardEyes:
@@ -83,8 +84,9 @@
         setupEyesColorInput.value = newEyesColor;
         evt.target.style.fill = newEyesColor;
         eyesColor = newEyesColor;
-        sortWizardsData(window.sourceData);
-        // window.util.debounce(testFunc);
+        window.util.debounce(() => {
+          sortWizardsData(window.sourceData);
+        })();
         break;
 
       case fireballColor:
