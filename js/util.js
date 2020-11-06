@@ -1,6 +1,7 @@
 'use strict';
 
 (() => {
+  const DEBOUNCE_INTERVAL = 500;
 
   const getRandomArrayIndex = (array) => {
     return array[Math.floor(Math.random() * array.length)];
@@ -47,11 +48,25 @@
     document.body.insertAdjacentElement(`afterbegin`, node);
   };
 
+  const debounce = function (cb, interval = DEBOUNCE_INTERVAL) {
+    let lastTimeout = null;
+
+    return function (...parameters) {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb(...parameters);
+      }, interval);
+    };
+  };
+
   window.util = {
     getRandomArrayIndex,
     getPartOfArray,
     getMaxElement,
-    showErrorMessage
+    showErrorMessage,
+    debounce
   };
 
 })();

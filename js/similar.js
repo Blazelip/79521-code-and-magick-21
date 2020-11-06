@@ -11,10 +11,11 @@
     window.util.showErrorMessage(errorMessage);
   };
 
-  window.backend.download(onSuccessLoadData, onFailedRequest);
+  // window.backend.download(onSuccessLoadData, onFailedRequest);
 
-  window.setup = {
-    onFailedRequest
+  window.similar = {
+    onFailedRequest,
+    onSuccessLoadData
   };
 
 })();
