@@ -12,6 +12,7 @@
 
   const openPopup = () => {
     setupBlock.classList.remove(`hidden`);
+    window.backend.download(window.similar.onSuccessLoadData, window.similar.onFailedRequest);
 
     document.addEventListener(`keydown`, onPopupEscPress);
     setupClose.addEventListener(`keydown`, onPopupCloseBtnEnter);
@@ -107,7 +108,7 @@
   });
 
   setupForm.addEventListener(`submit`, (evt) => {
-    window.backend.upload(new FormData(setupForm), onSuccessSendForm, window.setup.methods.onFailedRequest);
+    window.backend.upload(new FormData(setupForm), onSuccessSendForm, window.similar.onFailedRequest);
     evt.preventDefault();
   });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const API_URL = `https://21.javascript.pages.academy/code-and-magick`;
+  const API_URL = `https://javascript.pages.academy/code-and-magick`;
 
   const TIMEOUT_IN_MS = 10000;
 
