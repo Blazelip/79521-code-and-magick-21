@@ -1,72 +1,70 @@
 'use strict';
 
-(() => {
-  const DEBOUNCE_INTERVAL = 500;
 
-  const getRandomArrayIndex = (array) => {
-    return array[Math.floor(Math.random() * array.length)];
-  };
+const THROTTLING_LAG = 1500;
 
-  const getMaxElement = function (arr) {
-    let maxElement = arr[0];
+const getRandomArrayIndex = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
 
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i] > maxElement) {
-        maxElement = arr[i];
-      }
+const getMaxElement = function (arr) {
+  let maxElement = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > maxElement) {
+      maxElement = arr[i];
     }
+  }
 
-    return maxElement;
-  };
+  return maxElement;
+};
 
-  const shuffleArray = (array) => {
-    const copiedArray = array.slice();
+const shuffleArray = (array) => {
+  const copiedArray = array.slice();
 
-    for (let i = copiedArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = copiedArray[i];
-      copiedArray[i] = copiedArray[j];
-      copiedArray[j] = temp;
-    }
+  for (let i = copiedArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = copiedArray[i];
+    copiedArray[i] = copiedArray[j];
+    copiedArray[j] = temp;
+  }
 
-    return copiedArray;
-  };
+  return copiedArray;
+};
 
-  const getPartOfArray = (array, endPoint) => {
-    return shuffleArray(array).slice(0, endPoint);
-  };
+const getPartOfArray = (array, endPoint) => {
+  return shuffleArray(array).slice(0, endPoint);
+};
 
-  const showErrorMessage = (errorMessage) => {
-    const node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `absolute`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
+const showErrorMessage = (errorMessage) => {
+  const node = document.createElement(`div`);
+  node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+  node.style.position = `absolute`;
+  node.style.left = 0;
+  node.style.right = 0;
+  node.style.fontSize = `30px`;
 
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement(`afterbegin`, node);
-  };
+  node.textContent = errorMessage;
+  document.body.insertAdjacentElement(`afterbegin`, node);
+};
 
-  const debounce = function (cb, interval = DEBOUNCE_INTERVAL) {
-    let lastTimeout = null;
+const throttle = function (cb, lag = THROTTLING_LAG) {
+  let lastTimeout = null;
 
-    return function (...parameters) {
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
+  return function (...parameters) {
+    if (lastTimeout === null) {
       lastTimeout = window.setTimeout(function () {
         cb(...parameters);
-      }, interval);
-    };
+        lastTimeout = null;
+      }, lag);
+    }
   };
+};
 
-  window.util = {
-    getRandomArrayIndex,
-    getPartOfArray,
-    getMaxElement,
-    showErrorMessage,
-    debounce
-  };
-
-})();
+window.util = {
+  getRandomArrayIndex,
+  getPartOfArray,
+  getMaxElement,
+  showErrorMessage,
+  throttle
+};

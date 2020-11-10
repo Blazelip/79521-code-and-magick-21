@@ -1,56 +1,53 @@
 'use strict';
 
-(() => {
-  const API_URL = `https://javascript.pages.academy/code-and-magick`;
+const API_URL = `https://javascript.pages.academy/code-and-magick`;
 
-  const TIMEOUT_IN_MS = 10000;
+const TIMEOUT_IN_MS = 10000;
 
-  const statusCode = {
-    OK: 200
-  };
+const StatusCode = {
+  OK: 200
+};
 
-  const getServerResponse = (xhr, onLoad, onError) => {
-    xhr.addEventListener(`load`, () => {
-      if (xhr.status === statusCode.OK) {
-        onLoad(xhr.response);
-      } else {
-        onError(`Статус ответа: ${xhr.status} - ${xhr.statusText}`);
-      }
-    });
+const getServerResponse = (xhr, onLoad, onError) => {
+  xhr.addEventListener(`load`, () => {
+    if (xhr.status === StatusCode.OK) {
+      onLoad(xhr.response);
+    } else {
+      onError(`Статус ответа: ${xhr.status} - ${xhr.statusText}`);
+    }
+  });
 
-    xhr.addEventListener(`error`, function () {
-      onError(`Произошла ошибка соединения`);
-    });
-    xhr.addEventListener(`timeout`, function () {
-      onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
-    });
+  xhr.addEventListener(`error`, function () {
+    onError(`Произошла ошибка соединения`);
+  });
+  xhr.addEventListener(`timeout`, function () {
+    onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
+  });
 
-    xhr.timeout = TIMEOUT_IN_MS;
-  };
+  xhr.timeout = TIMEOUT_IN_MS;
+};
 
-  const download = (onLoad, onError) => {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = `json`;
+const download = (onLoad, onError) => {
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = `json`;
 
-    getServerResponse(xhr, onLoad, onError);
+  getServerResponse(xhr, onLoad, onError);
 
-    xhr.open(`GET`, `${API_URL}/data`);
-    xhr.send();
-  };
+  xhr.open(`GET`, `${API_URL}/data`);
+  xhr.send();
+};
 
-  const upload = (data, onLoad, onError) => {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = `json`;
+const upload = (data, onLoad, onError) => {
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = `json`;
 
-    getServerResponse(xhr, onLoad, onError);
+  getServerResponse(xhr, onLoad, onError);
 
-    xhr.open(`POST`, API_URL);
-    xhr.send(data);
-  };
+  xhr.open(`POST`, API_URL);
+  xhr.send(data);
+};
 
-  window.backend = {
-    download,
-    upload
-  };
-
-})();
+window.backend = {
+  download,
+  upload
+};
