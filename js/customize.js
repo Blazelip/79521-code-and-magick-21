@@ -61,7 +61,7 @@ const sortWizardsData = (sourceData) => {
   }));
 };
 
-const chooseItemColor = (input, array) => {
+const getItemColor = (input, array) => {
   const currentColor = input.value;
   let newColor = window.util.getRandomArrayIndex(array);
 
@@ -76,31 +76,27 @@ const onWizzardSetSettings = (evt) => {
 
   switch (evt.target) {
     case wizardCoat:
-      const readyCoatColor = chooseItemColor(setupCoatColorInput, COAT_COLORS);
-      setupCoatColorInput.value = readyCoatColor;
-      evt.target.style.fill = readyCoatColor;
-      coatColor = readyCoatColor;
-      window.util.throttle(() => {
-        sortWizardsData(window.sourceData);
-      })();
+      const newCoatColor = getItemColor(setupCoatColorInput, COAT_COLORS);
+      setupCoatColorInput.value = newCoatColor;
+      evt.target.style.fill = newCoatColor;
+      coatColor = newCoatColor;
+      window.util.throttle(() => sortWizardsData(window.sourceData))();
       break;
 
     case wizardEyes:
-      const readyEyesColor = chooseItemColor(setupEyesColorInput, EYES_COLORS);
+      const newEyesColor = getItemColor(setupEyesColorInput, EYES_COLORS);
 
-      setupEyesColorInput.value = readyEyesColor;
-      evt.target.style.fill = readyEyesColor;
-      eyesColor = readyEyesColor;
-      window.util.throttle(() => {
-        sortWizardsData(window.sourceData);
-      })();
+      setupEyesColorInput.value = newEyesColor;
+      evt.target.style.fill = newEyesColor;
+      eyesColor = newEyesColor;
+      window.util.throttle(() => sortWizardsData(window.sourceData))();
       break;
 
     case fireballColor:
-      const readyFireballColor = chooseItemColor(setupFireballColorInput, FIREBALL_COLORS);
+      const newFireballColor = getItemColor(setupFireballColorInput, FIREBALL_COLORS);
 
-      setupFireballColorInput.value = readyFireballColor;
-      evt.target.style.backgroundColor = readyFireballColor;
+      setupFireballColorInput.value = newFireballColor;
+      evt.target.style.backgroundColor = newFireballColor;
       break;
   }
 };
