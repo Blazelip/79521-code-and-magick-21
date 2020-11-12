@@ -49,16 +49,35 @@ const showErrorMessage = (errorMessage) => {
 };
 
 const throttle = function (cb, lag = THROTTLING_LAG) {
-  let lastTimeout = null;
 
-  return function (...parameters) {
-    if (lastTimeout === null) {
-      lastTimeout = window.setTimeout(function () {
-        cb(...parameters);
-        lastTimeout = null;
-      }, lag);
+  let isThrottled = false;
+  let savedArgs;
+  let savedThis;
+
+  function wrapper() {
+
+    if (isThrottled) {
+      savedArgs = arguments;
+      savedThis = this;
+      return;
     }
-  };
+
+    cb.apply(this, arguments);
+
+    isThrottled = true;
+
+    setTimeout(function () {
+      isThrottled = false;
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = null;
+        savedThis = null;
+      }
+    }, lag);
+
+  }
+
+  return wrapper;
 };
 
 window.util = {

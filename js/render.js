@@ -24,10 +24,6 @@ const renderWizards = (wizardsArray) => {
   const takeNumber = wizardsArray.length > WIZARDS_AMOUNT ? WIZARDS_AMOUNT : wizardsArray.length;
 
   setupSimilarList.innerHTML = ``;
-  // wizardsArray.forEach((wizard) => {
-  //   const currentWizard = createWizard(wizard);
-  //   fragment.appendChild(currentWizard);
-  // });
 
   for (let i = 0; i < takeNumber; i++) {
     const currentWizard = createWizard(wizardsArray[i]);
