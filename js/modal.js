@@ -15,7 +15,7 @@ const openPopup = () => {
 
   document.addEventListener(`keydown`, onPopupEscPress);
   setupClose.addEventListener(`keydown`, onPopupCloseBtnEnter);
-  setupPlayer.addEventListener(`click`, window.customize.onWizzardSetSettings);
+  setupPlayer.addEventListener(`click`, window.util.debounce(window.customize.onWizzardSetSettings));
 };
 
 const closePopup = () => {
@@ -23,7 +23,7 @@ const closePopup = () => {
 
   document.removeEventListener(`keydown`, onPopupEscPress);
   setupClose.removeEventListener(`keydown`, onPopupCloseBtnEnter);
-  setupPlayer.removeEventListener(`click`, window.customize.onWizzardSetSettings);
+  setupPlayer.removeEventListener(`click`, window.util.debounce(window.customize.onWizzardSetSettings));
 };
 
 const onPopupEscPress = (evt) => {

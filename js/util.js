@@ -1,7 +1,6 @@
 'use strict';
 
-
-const THROTTLING_LAG = 1500;
+const DEBOUNCE_INTERVAL = 250;
 
 const getRandomArrayIndex = (array) => {
   return array[Math.floor(Math.random() * array.length)];
@@ -48,36 +47,17 @@ const showErrorMessage = (errorMessage) => {
   document.body.insertAdjacentElement(`afterbegin`, node);
 };
 
-const throttle = function (cb, lag = THROTTLING_LAG) {
+const debounce = (cb, interval = DEBOUNCE_INTERVAL) => {
+  let lastTimeout = null;
 
-  let isThrottled = false;
-  let savedArgs;
-  let savedThis;
-
-  function wrapper() {
-
-    if (isThrottled) {
-      savedArgs = arguments;
-      savedThis = this;
-      return;
+  return function (...parameters) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
     }
-
-    cb.apply(this, arguments);
-
-    isThrottled = true;
-
-    setTimeout(function () {
-      isThrottled = false;
-      if (savedArgs) {
-        wrapper.apply(savedThis, savedArgs);
-        savedArgs = null;
-        savedThis = null;
-      }
-    }, lag);
-
-  }
-
-  return wrapper;
+    lastTimeout = window.setTimeout(function () {
+      cb(...parameters);
+    }, interval);
+  };
 };
 
 window.util = {
@@ -85,5 +65,5 @@ window.util = {
   getPartOfArray,
   getMaxElement,
   showErrorMessage,
-  throttle
+  debounce
 };

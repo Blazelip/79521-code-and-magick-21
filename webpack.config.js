@@ -17,8 +17,9 @@ module.exports = {
     path: path.resolve(__dirname),
     iife: true,
   },
-  devtool: false,
+  devtool: `source-map`,
   devServer: {
+    hot: true,
     open: true,
     compress: true,
     port: 8080

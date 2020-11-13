@@ -73,14 +73,13 @@ const getItemColor = (input, array) => {
 };
 
 const onWizzardSetSettings = (evt) => {
-
   switch (evt.target) {
     case wizardCoat:
       const newCoatColor = getItemColor(setupCoatColorInput, COAT_COLORS);
       setupCoatColorInput.value = newCoatColor;
       evt.target.style.fill = newCoatColor;
       coatColor = newCoatColor;
-      window.util.throttle(() => sortWizardsData(window.sourceData))();
+      sortWizardsData(window.sourceData);
       break;
 
     case wizardEyes:
@@ -89,7 +88,7 @@ const onWizzardSetSettings = (evt) => {
       setupEyesColorInput.value = newEyesColor;
       evt.target.style.fill = newEyesColor;
       eyesColor = newEyesColor;
-      window.util.throttle(() => sortWizardsData(window.sourceData))();
+      sortWizardsData(window.sourceData);
       break;
 
     case fireballColor:
